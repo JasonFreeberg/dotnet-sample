@@ -28,6 +28,11 @@ jobs:
 
     - name: Run MSBuild
       run: msbuild .\SampleWebApplication.sln
+    
+    - name: Print build dir
+      run: |
+        ls .
+        ls SampleWebApplication/
        
     - name: 'Run Azure webapp deploy action using publish profile credentials'
       uses: azure/webapps-deploy@v2
