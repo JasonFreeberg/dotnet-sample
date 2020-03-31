@@ -4,21 +4,6 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - '*'
-# CONFIGURATION
-#
-# For help, go to https://github.com/Azure/Actions
-#
-# 1. Set up the following secrets in your repository:
-#   AZURE_WEBAPP_PUBLISH_PROFILE
-#
-# 2. Change these variables for your configuration:
-env:
-  AZURE_WEBAPP_NAME: dotnetappGH    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  NUGET_VERSION: '5.3.1'           # set this to the dot net version to use
 
 jobs:
   build-and-deploy:
@@ -31,8 +16,9 @@ jobs:
     - name: Install Nuget
       uses: nuget/setup-nuget@v1
       with:
-        nuget-version: ${{ env.NUGET_VERSION}}
-    - name: NuGet to restore dependencies as well as project-specific tools that are specified in the project file
+        nuget-version: 'latest'
+    
+    - name: Install dependencies
       run: nuget restore
   
     - name: Add msbuild to PATH
@@ -48,6 +34,6 @@ jobs:
       with: 
         app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
-        package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/SampleWebApplication/'
+        package: './SampleWebApplication/'
   
   # For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples
